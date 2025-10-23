@@ -68,14 +68,6 @@ public_users.get('/isbn/:isbn',function (req, res) {
   
 // Get book details based on author
 public_users.get('/author/:author',function (req, res) {
-  const author = req.params.author;
-  const booksByAuthor = Object.values(books).filter(
-    x => x.author.toLowerCase() === author.toLowerCase()
-  )
-  res.send(JSON.stringify(booksByAuthor, null, 4));
-});
-
-public_users.get('/author/:author',function (req, res) {
     new Promise((resolve, reject) => {
         const author = req.params.author;
         const booksByAuthor = Object.values(books).filter(
