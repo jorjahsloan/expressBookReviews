@@ -87,17 +87,25 @@ public_users.get('/author/:author',function (req, res) {
         return res.status(200).send(JSON.stringify(bookList, null, 4));
     })
     .catch((err) => {
-        return res.status(500).json({ message: "Error retrieving book list"});
+        return res.status(500).json({ message: "Error retrieving book"});
     })
 });
 
 // Get all books based on title
 public_users.get('/title/:title',function (req, res) {
-  const title = req.params.title;
-  const bookByTitle = Object.values(books).filter(
-    x => x.title.toLowerCase() === title.toLowerCase()
-  )
-  res.send(JSON.stringify(bookByTitle, null, 4));
+    new Promise((resolve, reject) => {
+        const title = req.params.title;
+        const bookByTitle = Object.values(books).filter(
+            x => x.title.toLowerCase() === title.toLocaleLowerCase()
+        )
+        resolve(bookByTitle);
+    })
+    .then((bookList) => {
+        return res.status(200).send(JSON.stringify(bookList, null, 4));
+    })
+    .catch((err) => {
+        return res.status(500).json({ message: "Error retrieving book list"});
+    })
 });
 
 //  Get book review
