@@ -69,10 +69,26 @@ public_users.get('/isbn/:isbn',function (req, res) {
 // Get book details based on author
 public_users.get('/author/:author',function (req, res) {
   const author = req.params.author;
-  const bookByAuthor = Object.values(books).filter(
+  const booksByAuthor = Object.values(books).filter(
     x => x.author.toLowerCase() === author.toLowerCase()
   )
-  res.send(JSON.stringify(bookByAuthor, null, 4));
+  res.send(JSON.stringify(booksByAuthor, null, 4));
+});
+
+public_users.get('/author/:author',function (req, res) {
+    new Promise((resolve, reject) => {
+        const author = req.params.author;
+        const booksByAuthor = Object.values(books).filter(
+            x => x.author.toLowerCase() === author.toLowerCase()
+        )
+        resolve(booksByAuthor);
+    })
+    .then((bookList) => {
+        return res.status(200).send(JSON.stringify(bookList, null, 4));
+    })
+    .catch((err) => {
+        return res.status(500).json({ message: "Error retrieving book list"});
+    })
 });
 
 // Get all books based on title
